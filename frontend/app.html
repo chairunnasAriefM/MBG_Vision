@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scanner AI - MBG Vision</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="img/icon.png" type="image/x-icon">
+</head>
+
+<body class="app-bg">
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="back-link">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Beranda
+            </a>
+            <div class="logo">MBG<span>Vision</span></div>
+        </div>
+    </nav>
+
+    <main class="dashboard-container fade-in-up">
+
+        <div class="visual-panel">
+            <div class="panel-header">
+                <h2>Panel Deteksi YOLO</h2>
+                <p>Unggah foto, gunakan kamera, atau masukkan video untuk inspeksi.</p>
+            </div>
+
+            <div class="media-controls">
+                <button id="btnCamera" class="btn-outline">
+                    <span class="icon">📸</span> Buka Kamera
+                </button>
+            </div>
+
+            <div class="upload-area" id="dropZone" onclick="document.getElementById('fileInput').click()">
+                <div class="upload-icon-wrapper">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                    </svg>
+                </div>
+                <div class="upload-text">Klik atau seret gambar ke sini</div>
+                <div class="upload-hint">Format didukung: JPG, PNG, WEBP</div>
+                <input type="file" id="fileInput" accept="image/*">
+            </div>
+
+            <div class="example-images-container" id="exampleContainer">
+                <p class="example-title">Atau coba dengan gambar contoh:</p>
+                <div class="example-images">
+                    <img src="/static/img/contoh1.png" alt="Contoh 1" class="example-img"
+                        onclick="loadExample(this.src)">
+                    <img src="/static/img/contoh4.png" alt="Contoh 2" class="example-img"
+                        onclick="loadExample(this.src)">
+                    <img src="/static/img/contoh3.png" alt="Contoh 3" class="example-img"
+                        onclick="loadExample(this.src)">
+                </div>
+            </div>
+
+            <div class="preview-container" id="previewContainer">
+                <img id="displayImage" alt="Preview Gambar">
+                <video id="videoElement" autoplay playsinline muted></video>
+                <canvas id="canvasElement" style="display: none;"></canvas>
+                <div class="scan-line" id="scanLine"></div>
+            </div>
+
+            <button class="btn-gradient" id="actionBtn" onclick="processImage()" style="display: none;">
+                <span class="spinner" id="spinner"></span>
+                <span id="btnText">Jalankan Analisis</span>
+            </button>
+
+            <button class="btn-outline" id="cancelBtn" onclick="window.resetUI()"
+                style="display: none; width: 100%; margin-top: 12px; border-color: var(--danger-border); color: var(--danger-text);">
+                Batalkan & Ganti Media
+            </button>
+        </div>
+
+        <div class="analysis-panel">
+            <div class="panel-header">
+                <h2>Transparansi Model</h2>
+            </div>
+
+            <div class="status-box" id="statusBox">
+                <div class="status-icon" id="statusIcon">⏳</div>
+                <div class="status-text">
+                    <h3 id="statusTitle">Menunggu Media</h3>
+                    <p id="statusDesc">Sistem siap melakukan deteksi.</p>
+                </div>
+            </div>
+
+            <div class="metrics-container" id="metricsContainer">
+                <div class="confidence-box" id="confidenceBox" style="display: none;">
+                    <span class="conf-label">Confidence Score</span>
+                    <strong id="confScore" class="conf-value">-%</strong>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
