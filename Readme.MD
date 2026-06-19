@@ -71,7 +71,7 @@ Lalu akses:
 ### 3. Buka di Browser
 Buka `http://localhost:8000` lalu klik **"Coba Demo Aplikasi"** untuk masuk ke panel deteksi.
 
-## 🔁 Alur Kerja Sistem
+## Alur Kerja Sistem
 
 1. **Input Citra** — pengguna mengunggah foto, memilih gambar contoh, atau mengaktifkan kamera
 2. **Inferensi Model** — citra dikirim ke backend FastAPI dan diproses oleh model YOLOv8
