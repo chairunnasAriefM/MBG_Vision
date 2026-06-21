@@ -94,6 +94,36 @@ if (dropZone) {
         reader.readAsDataURL(currentFile);
     }
 
+    // Menangkap file gambar dari shortcut Ctrl + V (Paste)
+    window.addEventListener('paste', e => {
+        // Jika sedang dalam mode kamera/preview aktif, batalkan proses paste
+        if (dropZone.style.display === 'none') return;
+
+        // 1. Cek jika yang di-paste adalah file murni (Copy dari File Explorer)
+        const clipboardFiles = e.clipboardData.files;
+        if (clipboardFiles && clipboardFiles.length > 0) {
+            const imageFiles = Array.from(clipboardFiles).filter(file => file.type.startsWith('image/'));
+            if (imageFiles.length > 0) {
+                handleImageFiles(imageFiles);
+                e.preventDefault();
+                return;
+            }
+        }
+
+        // 2. Cek jika yang di-paste adalah data gambar/pixels (Hasil Snipping Tool / Screenshot)
+        const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+        for (let item of items) {
+            if (item.kind === 'file' && item.type.startsWith('image/')) {
+                const file = item.getAsFile();
+                if (file) {
+                    handleImageFiles([file]);
+                    e.preventDefault();
+                    break;
+                }
+            }
+        }
+    });
+
     // ==========================================
     // LOGIKA KAMERA & WEBSOCKET (REAL-TIME)
     // ==========================================
