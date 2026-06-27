@@ -10,7 +10,8 @@ Prototipe sistem deteksi benda asing pada makanan menggunakan **YOLOv8**, dikemb
 
 MBG Vision mencoba menjawab tantangan pengawasan kualitas distribusi makanan dengan memanfaatkan model *object detection* untuk mengenali objek anomali (benda asing) pada citra ompreng secara otomatis, baik dari foto yang diunggah maupun dari kamera secara real-time.
 
-![Tampilan Panel Deteksi MBG Vision](frontend/img/tentang.png)
+![Tampilan Landing Page MBG Vision](frontend/img/tentang.png)
+![Tampilan Panel Deteksi MBG Vision](frontend/img/implementasi.png)
 
 ## Fitur
 
