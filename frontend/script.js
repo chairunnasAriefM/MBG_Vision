@@ -49,10 +49,8 @@ if (dropZone) {
     // LOGIKA PASTE GAMBAR (CTRL + V)
     // ==========================================
     window.addEventListener('paste', e => {
-        // Jangan proses paste jika workspace sedang dipakai (gambar/video sedang tampil)
         if (dropZone.style.display === 'none') return;
 
-        // 1. Cek jika yang di-paste adalah file murni (Copy dari File Explorer)
         const clipboardFiles = e.clipboardData.files;
         if (clipboardFiles && clipboardFiles.length > 0) {
             const imageFiles = Array.from(clipboardFiles).filter(file => file.type.startsWith('image/'));
@@ -63,7 +61,6 @@ if (dropZone) {
             }
         }
 
-        // 2. Cek jika yang di-paste adalah data piksel (Hasil Snipping Tool / Screenshot)
         const items = (e.clipboardData || e.originalEvent.clipboardData).items;
         for (let item of items) {
             if (item.kind === 'file' && item.type.startsWith('image/')) {
@@ -77,6 +74,66 @@ if (dropZone) {
         }
     });
 
+// ==========================================
+    // LOGIKA PENGATURAN THRESHOLD (SLIDER RANGE MODAL)
+    // ==========================================
+    let modelConfidenceThreshold = 0.326;
+
+    // Fungsi membuka jendela konfigurasi slider
+    window.openSettings = function () {
+        const settingsOverlay = document.getElementById('settingsOverlay');
+        const confSlider = document.getElementById('confSlider');
+        const sliderValue = document.getElementById('sliderValue');
+
+        if (settingsOverlay && confSlider && sliderValue) {
+            // Sinkronisasi nilai range slider dengan state variabel saat ini
+            confSlider.value = (modelConfidenceThreshold * 100).toFixed(1);
+            sliderValue.innerText = confSlider.value + '%';
+
+            // Memicu perubahan angka teks secara interaktif saat slider digeser
+            confSlider.oninput = function () {
+                sliderValue.innerText = this.value + '%';
+            };
+
+            // Menambahkan class aktif untuk memicu transisi CSS animasi muncul
+            settingsOverlay.classList.add('active');
+        }
+    };
+
+    // Fungsi menutup jendela pengaturan modal
+    window.closeSettings = function () {
+        const settingsOverlay = document.getElementById('settingsOverlay');
+        if (settingsOverlay) {
+            settingsOverlay.classList.remove('active');
+        }
+    };
+
+    // Menerapkan nilai baru threshold ke memori runtime aplikasi web
+    window.applySettings = function () {
+        const confSlider = document.getElementById('confSlider');
+        if (confSlider) {
+            modelConfidenceThreshold = parseFloat(confSlider.value) / 100;
+            window.closeSettings();
+            console.log(`[YOLOv8 Pipeline] Threshold berhasil diubah ke: ${confSlider.value}%`);
+
+            // Jika websocket sedang streaming live, langsung kirim parameter pembaruan ke backend
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(`SET_CONF:${modelConfidenceThreshold}`);
+            }
+        }
+    };
+
+    // Menutup modal otomatis jika area background transparan di luar box diklik
+    document.addEventListener('click', function (e) {
+        const settingsOverlay = document.getElementById('settingsOverlay');
+        if (e.target === settingsOverlay) {
+            window.closeSettings();
+        }
+    });
+
+    // ==========================================
+    // LOGIKA PEMROSESAN MEDIA
+    // ==========================================
     function handleImageFiles(files) {
         if (files.length === 0) return;
         stopCamera();
@@ -125,7 +182,7 @@ if (dropZone) {
             spinner.style.display = 'inline-block';
             cancelBtn.disabled = true;
 
-            ws = new WebSocket("ws://localhost:8000/ws/detect/");
+            ws = new WebSocket(`ws://localhost:8000/ws/detect/?conf=${modelConfidenceThreshold}`);
 
             ws.onopen = () => {
                 btnText.innerText = 'Hentikan Proses Stream';
@@ -190,8 +247,7 @@ if (dropZone) {
         scanLine.style.display = 'block';
 
         try {
-            // Ganti URL endpoint ini sesuai konfigurasi lokal backend FastAPI milikmu
-            const response = await fetch("http://localhost:8000/detect/", {
+            const response = await fetch(`http://localhost:8000/detect/?conf=${modelConfidenceThreshold}`, {
                 method: "POST",
                 body: formData
             });
@@ -213,6 +269,7 @@ if (dropZone) {
             scanLine.style.display = 'none';
         }
     }
+
     function updateMetricsUI(data) {
         const detections = data.detections_count || 0;
         const avgConfidence = data.confidence ? `${(data.confidence * 100).toFixed(1)}%` : (detections > 0 ? '91.4%' : '98.8%');
@@ -224,7 +281,6 @@ if (dropZone) {
         if (detections > 0) {
             statusBox.style.background = 'var(--danger-bg)';
             statusBox.style.borderColor = 'var(--danger-border)';
-            // SVG Alert/Danger
             statusIcon.innerHTML = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--danger-text);"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`;
             statusTitle.innerText = 'Kontaminasi Terdeteksi';
             statusTitle.style.color = 'var(--danger-text)';
@@ -232,7 +288,6 @@ if (dropZone) {
         } else {
             statusBox.style.background = 'var(--success-bg)';
             statusBox.style.borderColor = 'var(--success-border)';
-            // SVG Check/Safe
             statusIcon.innerHTML = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--success-text);"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`;
             statusTitle.innerText = 'Clear - Aman';
             statusTitle.style.color = 'var(--success-text)';
@@ -254,7 +309,7 @@ if (dropZone) {
             displayImage.style.display = 'none';
             videoElement.style.display = 'block';
         }
-    } fileInput.addEventListener
+    }
 
     function resetInfoPanel(title, desc) {
         statusBox.style.background = '#FFFFFF';
