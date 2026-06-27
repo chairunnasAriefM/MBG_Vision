@@ -4,14 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MBG Vision - Prototipe Deteksi Keamanan Pangan (Tugas Akhir)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="/static/style.css">
-    <link rel="icon" href="/static/img/icon.png" type="image/x-icon">
+    <title>MBG Vision - Prototipe Deteksi Keamanan Pangan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </head>
 
 <body>
+
+    <!-- Custom cursor elements -->
+    <div class="cursor-orb" id="cursorOrb"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
+
+    <!-- Scroll progress bar -->
+    <div class="scroll-progress" id="scrollProgress"></div>
 
     <nav class="navbar" id="navbar">
         <div class="nav-container">
@@ -22,314 +31,163 @@
                 <a href="#keunggulan" class="nav-link">Keunggulan</a>
                 <a href="#metodologi" class="nav-link">Metodologi</a>
             </div>
-            <a href="/static/app.html" class="nav-btn">Buka Aplikasi →</a>
+            <a href="static/app.html" class="nav-btn">
+                Workspace
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
         </div>
     </nav>
 
-    <!-- Animated background blob -->
-    <div class="hero-bg-blob"></div>
-
-    <section class="hero fade-in-up">
-        <div class="hero-content">
-            <div class="badge-tech">
-                <span></span> Proyek Tugas Akhir — YOLOv8 Object Detection
-            </div>
-            <h1>Inspeksi Keamanan Ompreng dengan <span class="text-gradient">Kecerdasan Buatan</span></h1>
-            <p>Prototipe sistem deteksi benda asing pada makanan menggunakan YOLOv8, dikembangkan sebagai bagian dari
-                tugas akhir untuk mendukung pengawasan kualitas program Makan Bergizi Gratis (MBG).</p>
-            <div class="hero-cta-group">
-                <a href="/static/app.html" class="cta-button">
-                    Coba Demo Aplikasi
-                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                            d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
-                </a>
-                <a href="#tentang" class="cta-secondary">Tentang Proyek</a>
-            </div>
-
-            <div class="hero-stats fade-in-up delay-1">
-                <div class="stat-item">
-                    <div class="stat-value">YOLOv8</div>
-                    <div class="stat-label">Model Arsitektur</div>
+    <div id="vanta-hero-canvas">
+        <section class="hero-immersive-stage">
+            <div class="storytelling-deck">
+                <h1 class="kinetic-title" id="kineticTitle">
+                    <!-- Words injected by JS -->
+                </h1>
+                <p class="cinematic-desc" id="cinematicDesc">
+                    Integrasi visi komputer, gerakan, dan teknologi pelokalan objek presisi tinggi untuk standarisasi mutu program Makan Bergizi Gratis.
+                </p>
+                <div class="immersive-cta-group" id="ctaGroup">
+                    <a href="app.html" class="immersive-cta-main">
+                        Masuki Workspace
+                        <span class="arrow-glow">→</span>
+                    </a>
+                    <a href="#tentang" class="immersive-cta-sec">Eksplorasi Metodologi</a>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-value">FastAPI</div>
-                    <div class="stat-label">Backend Engine</div>
+                <div class="immersive-stats" id="heroStats">
+                    <div class="imm-stat-box">
+                        <span class="imm-stat-num">YOLOv8</span>
+                        <span class="imm-stat-label">Neural Architecture</span>
+                    </div>
+                    <div class="imm-stat-box">
+                        <span class="imm-stat-num">FastAPI</span>
+                        <span class="imm-stat-label">WebSocket Stream</span>
+                    </div>
                 </div>
             </div>
+        </section>
+
+        <div class="scroll-hint" id="scrollHint">
+            <span class="scroll-hint-text">Scroll</span>
+            <div class="scroll-hint-line"></div>
         </div>
-    </section>
+    </div>
 
-    <!-- Tentang Kami -->
-    <section class="about-section reveal" id="tentang">
+    <section class="about-section" id="tentang">
         <div class="about-grid">
-            <div class="about-visual">
+            <div class="about-visual" data-aos="fade-right" data-aos-duration="1000">
                 <div class="about-visual-card">
-                    <img src="/static/img/mbg.webp" alt="Ilustrasi" class="about-visual-img">
-
-                    <div class="about-visual-glow"></div>
+                    <img src="/static/img/mbg.webp" alt="Ilustrasi MBG Vision" class="about-visual-img">
                 </div>
             </div>
-            <div class="about-content">
-                <p class="section-label" style="text-align:left">Tentang Proyek</p>
-                <h2 class="section-title" style="text-align:left">Latar Belakang & Tujuan</h2>
-                <p class="about-text">MBG Vision adalah prototipe sistem deteksi benda asing pada makanan yang
-                    dikembangkan sebagai proyek tugas akhir perkuliahan. Proyek ini mencoba menjawab tantangan
-                    pengawasan kualitas pada program Makan Bergizi Gratis (MBG) dengan memanfaatkan model object
-                    detection YOLOv8 untuk mengenali objek anomali pada citra ompreng secara otomatis.</p>
+            <div class="about-content" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="150">
+                <p class="section-label">Latar Belakang</p>
+                <h2 class="section-title" style="text-align: left; margin-bottom: 1.5rem;">Automasi<br>Pengawasan Mutu</h2>
+                <p class="about-text">MBG Vision dirancang sebagai solusi riset modern untuk memitigasi risiko human error pada pengecekan kualitas makanan secara masif. Menggunakan Convolutional Neural Network tingkat lanjut untuk melokalisasi anomali visual dengan presisi tinggi.</p>
                 <div class="about-points">
                     <div class="about-point">
                         <span class="point-check">✓</span>
-                        <span>Model dilatih menggunakan dataset yang didapatkan dari internet sebagai referensi</span>
+                        <span>Dataset komprehensif yang dioptimasi untuk deteksi anomali objek makro.</span>
                     </div>
                     <div class="about-point">
                         <span class="point-check">✓</span>
-                        <span>Backend dibangun dengan FastAPI, mendukung mode upload dan streaming</span>
-                    </div>
-                    <div class="about-point">
-                        <span class="point-check">✓</span>
-                        <span>Dikembangkan untuk keperluan riset dan demonstrasi, bukan produk komersial</span>
+                        <span>Transmisi frame asinkronus via koneksi WebSocket penuh tanpa interupsi.</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="features-section reveal" id="fitur">
-        <p class="section-label">Fitur Unggulan</p>
-        <h2 class="section-title">Semua yang kamu butuhkan</h2>
+    <section class="features-section" id="fitur">
+        <p class="section-label" style="text-align:center;">Kapabilitas</p>
+        <h2 class="section-title" data-aos="fade-down">Fitur Pipeline Utama</h2>
         <div class="feature-container">
-            <div class="feature-card">
-                <div class="feature-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        id="Camera-Display--Streamline-Ultimate" height="24" width="24">
-                        <desc>
-                            Camera Display Streamline Icon: https://streamlinehq.com
-                        </desc>
-                        <path fill="#808080"
-                            d="M19.7765 6.73913c-0.182 -0.00002 -0.3602 -0.05196 -0.5136 -0.14972 -0.1536 -0.09776 -0.276 -0.23729 -0.353 -0.40219 -0.5184 -1.11052 -1.0751 -2.31765 -2.1273 -2.31765H12c-0.8905 0 -1.3391 0.79774 -2.58261 2.4793 -0.0883 0.12021 -0.20347 0.2181 -0.33634 0.28586 -0.13286 0.06776 -0.27974 0.10351 -0.42888 0.1044H2.91304C1.47826 6.73913 1 7.38861 1 8.38722v9.93638c0 0.9976 0.47826 1.8068 1.96661 1.8068H21.0334c1.4883 0 1.9666 -0.8092 1.9666 -1.8068V8.38722c0 -0.99861 -0.4783 -1.64809 -1.9666 -1.64809h-1.2569Z"
-                            stroke-width="1"></path>
-                        <path fill="#b2b2b2"
-                            d="M19.7765 10.5652h1.2569c1.4883 0 1.9666 0.6495 1.9666 1.6481V8.38722c0 -0.99861 -0.4783 -1.64809 -1.9666 -1.64809h-1.2569c-0.182 -0.00002 -0.3602 -0.05196 -0.5136 -0.14972 -0.1536 -0.09776 -0.276 -0.23729 -0.353 -0.40219 -0.5184 -1.11052 -1.0751 -2.31765 -2.1273 -2.31765H12c-0.8905 0 -1.3391 0.79774 -2.58261 2.4793 -0.0883 0.12021 -0.20347 0.2181 -0.33634 0.28586 -0.13286 0.06776 -0.27974 0.10351 -0.42888 0.1044H2.91304C1.47826 6.73913 1 7.38861 1 8.38722v3.82608c0 -0.9986 0.47826 -1.6481 1.91304 -1.6481H19.7765Z"
-                            stroke-width="1"></path>
-                        <path fill="#e3e3e3"
-                            d="M2.9126 6.72382V5.7826c0 -0.25369 0.10078 -0.49698 0.28015 -0.67636 0.17939 -0.17938 0.42268 -0.28016 0.67637 -0.28016h0.95652c0.25369 0 0.49698 0.10078 0.67637 0.28016 0.17937 0.17938 0.28015 0.42267 0.28015 0.67636v0.95652"
-                            stroke-width="1"></path>
-                        <path stroke="#191919" stroke-linecap="round" stroke-linejoin="round"
-                            d="M19.7746 6.73913c-0.1813 0.00022 -0.359 -0.05109 -0.5122 -0.14796 -0.1532 -0.09687 -0.2759 -0.23531 -0.3534 -0.39917 -0.5625 -1.188 -1.0838 -2.32243 -2.1264 -2.32243H12c-0.8905 0 -1.3449 0.79965 -2.58261 2.4793 -0.0883 0.12021 -0.20347 0.2181 -0.33634 0.28586 -0.13286 0.06776 -0.27974 0.10351 -0.42888 0.1044H2.91304C1.47826 6.73913 1 7.38861 1 8.38722v9.93638c0 0.9976 0.47826 1.8068 1.96661 1.8068H21.0334c1.4883 0 1.9666 -0.8092 1.9666 -1.8068V8.38722c0 -0.99861 -0.4783 -1.64809 -1.9666 -1.64809h-1.2588Z"
-                            stroke-width="1"></path>
-                        <path fill="#e3e3e3"
-                            d="M17.2607 18.2174c2.113 0 3.826 -1.713 3.826 -3.8261 0 -2.113 -1.713 -3.8261 -3.826 -3.8261 -2.1131 0 -3.8261 1.7131 -3.8261 3.8261 0 2.1131 1.713 3.8261 3.8261 3.8261Z"
-                            stroke-width="1"></path>
-                        <path fill="#66e1ff"
-                            d="M10.5648 10.5652H3.86912c-0.52827 0 -0.95652 0.4283 -0.95652 0.9565v5.7392c0 0.5283 0.42825 0.9565 0.95652 0.9565h6.69568c0.5283 0 0.9565 -0.4282 0.9565 -0.9565v-5.7392c0 -0.5282 -0.4282 -0.9565 -0.9565 -0.9565Z"
-                            stroke-width="1"></path>
-                        <path stroke="#191919" stroke-linecap="round" stroke-linejoin="round"
-                            d="M17.2603 12.4783v0.9565" stroke-width="1"></path>
-                        <path stroke="#191919" stroke-linecap="round" stroke-linejoin="round"
-                            d="M17.2603 15.3478v0.9566" stroke-width="1"></path>
-                        <path stroke="#191919" stroke-linecap="round" stroke-linejoin="round"
-                            d="M19.1738 14.3913h-0.9565" stroke-width="1"></path>
-                        <path stroke="#191919" stroke-linecap="round" stroke-linejoin="round"
-                            d="M16.3042 14.3913h-0.9565" stroke-width="1"></path>
-                        <path fill="#c2f3ff"
-                            d="M10.5648 10.5652H3.86912c-0.25369 0 -0.49698 0.1008 -0.67637 0.2802 -0.17937 0.1793 -0.28015 0.4227 -0.28015 0.6763v5.7392c0.00281 0.2193 0.08169 0.4309 0.22318 0.5986 0.14149 0.1676 0.33679 0.281 0.55256 0.3206L11.11 10.7565c-0.1568 -0.12 -0.3478 -0.1871 -0.5452 -0.1913Z"
-                            stroke-width="1"></path>
-                        <path stroke="#191919" stroke-linecap="round" stroke-linejoin="round"
-                            d="M10.5648 10.5652H3.86912c-0.52827 0 -0.95652 0.4283 -0.95652 0.9565v5.7392c0 0.5283 0.42825 0.9565 0.95652 0.9565h6.69568c0.5283 0 0.9565 -0.4282 0.9565 -0.9565v-5.7392c0 -0.5282 -0.4282 -0.9565 -0.9565 -0.9565Z"
-                            stroke-width="1"></path>
-                        <path stroke="#191919" stroke-linecap="round" stroke-linejoin="round"
-                            d="M2.9126 6.72382V5.7826c0 -0.25369 0.10078 -0.49698 0.28015 -0.67636 0.17939 -0.17938 0.42268 -0.28016 0.67637 -0.28016h0.95652c0.25369 0 0.49698 0.10078 0.67637 0.28016 0.17937 0.17938 0.28015 0.42267 0.28015 0.67636v0.95652"
-                            stroke-width="1"></path>
-                        <path stroke="#191919" stroke-linecap="round" stroke-linejoin="round"
-                            d="M17.2607 18.2174c2.113 0 3.826 -1.713 3.826 -3.8261 0 -2.113 -1.713 -3.8261 -3.826 -3.8261 -2.1131 0 -3.8261 1.7131 -3.8261 3.8261 0 2.1131 1.713 3.8261 3.8261 3.8261Z"
-                            stroke-width="1"></path>
-                        <path stroke="#191919"
-                            d="M4.34753 8.88845c-0.13207 0 -0.23913 -0.10707 -0.23913 -0.23913 0 -0.13207 0.10706 -0.23913 0.23913 -0.23913"
-                            stroke-width="1"></path>
-                        <path stroke="#191919"
-                            d="M4.34717 8.88845c0.13206 0 0.23913 -0.10707 0.23913 -0.23913 0 -0.13207 -0.10707 -0.23913 -0.23913 -0.23913"
-                            stroke-width="1"></path>
-                        <path stroke="#191919"
-                            d="M6.2611 8.88845c-0.13206 0 -0.23913 -0.10707 -0.23913 -0.23913 0 -0.13207 0.10707 -0.23913 0.23913 -0.23913"
-                            stroke-width="1"></path>
-                        <path stroke="#191919"
-                            d="M6.26074 8.88845c0.13207 0 0.23913 -0.10707 0.23913 -0.23913 0 -0.13207 -0.10706 -0.23913 -0.23913 -0.23913"
-                            stroke-width="1"></path>
-                        <path stroke="#191919"
-                            d="M8.17321 8.88845c-0.13206 0 -0.23913 -0.10707 -0.23913 -0.23913 0 -0.13207 0.10707 -0.23913 0.23913 -0.23913"
-                            stroke-width="1"></path>
-                        <path stroke="#191919"
-                            d="M8.17285 8.88845c0.13208 0 0.23913 -0.10707 0.23913 -0.23913 0 -0.13207 -0.10705 -0.23913 -0.23913 -0.23913"
-                            stroke-width="1"></path>
-                    </svg></div>
+            <div class="feature-card tilt-card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="0">
+                <div class="feature-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                </div>
                 <h3>Unggah Instan</h3>
-                <p>Cukup drag & drop foto ompreng dengan pencahayaan terang untuk dianalisis oleh sistem secara
-                    otomatis.</p>
+                <p>Pemrosesan gambar statis resolusi tinggi secara modular dengan kalkulasi matriks inferensi langsung via REST API.</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        id="Time-Clock-Hand-1--Streamline-Ultimate" height="24" width="24">
-                        <desc>
-                            Time Clock Hand 1 Streamline Icon: https://streamlinehq.com
-                        </desc>
-                        <path fill="#66e1ff"
-                            d="M13.8183 18.7933c4.7743 0 8.6445 -3.8703 8.6445 -8.6445 0 -4.77425 -3.8702 -8.64453 -8.6445 -8.64453 -4.77419 0 -8.64447 3.87028 -8.64447 8.64453 0 4.7742 3.87028 8.6445 8.64447 8.6445Z"
-                            stroke-width="1"></path>
-                        <path fill="#c2f3ff"
-                            d="M7.70512 16.2618c-1.62116 -1.6213 -2.53187 -3.8202 -2.53178 -6.1129 0.00008 -2.29277 0.91096 -4.49157 2.53223 -6.11273 1.62128 -1.62115 3.82013 -2.53186 6.11293 -2.53178 2.2927 0.00009 4.4915 0.91096 6.1127 2.53224L7.70512 16.2618Z"
-                            stroke-width="1"></path>
-                        <path stroke="#191919" stroke-linecap="round" stroke-linejoin="round"
-                            d="M13.3643 5.66187v5.00473h4.5496" stroke-width="1"></path>
-                        <path stroke="#191919" stroke-linecap="round" stroke-linejoin="round"
-                            d="M5.62889 12.9724c-0.51 -1.5153 -0.58983 -3.14227 -0.23058 -4.70014 0.35924 -1.55786 1.14346 -2.98559 2.2655 -4.12447 1.12205 -1.13887 2.53789 -1.94427 4.09029 -2.32668 1.5524 -0.3824 3.1803 -0.32682 4.7029 0.16056 1.5227 0.48739 2.8804 1.38749 3.9221 2.60024 1.0418 1.21275 1.7268 2.69063 1.979 4.26937 0.2521 1.57872 0.0615 3.19652 -0.5507 4.67342 -0.6121 1.4769 -1.6218 2.7551 -2.917 3.6926"
-                            stroke-width="1"></path>
-                        <path stroke="#191919" stroke-linecap="round" stroke-linejoin="round"
-                            d="M1.53369 22.4957v-9.0995" stroke-width="1"></path>
-                        <path fill="#ffdda1" stroke="#191919" stroke-linecap="round" stroke-linejoin="round"
-                            d="M1.53369 15.2153h6.36964c0.724 0 1.41834 0.2876 1.93028 0.7995 0.51199 0.512 0.79959 1.2064 0.79959 1.9304h5.4597c0.724 0 1.4183 0.2875 1.9303 0.7995 0.5119 0.5119 0.7995 1.2063 0.7995 1.9303H1.53369v-5.4597Z"
-                            stroke-width="1"></path>
-                        <path stroke="#191919" stroke-linecap="round" stroke-linejoin="round"
-                            d="M10.6337 17.946H7.90381" stroke-width="1"></path>
-                    </svg></div>
-                <h3>Proses Real-time</h3>
-                <p>Tanpa jeda panjang. Deteksi benda asing dilakukan dalam hitungan detik menggunakan backend FastAPI.
-                </p>
+            <div class="feature-card tilt-card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="120">
+                <div class="feature-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7a2 2 0 0 0-2.45-1.45L16 7V5a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2l4.55 1.45A2 2 0 0 0 23 17V7z"/></svg>
+                </div>
+                <h3>Stream Real-time</h3>
+                <p>Penangkapan frame video dari kamera lokal, dipetakan secara konstan tanpa interupsi UI melalui WebSocket pipeline.</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        id="Task-Finger-Show--Streamline-Ultimate" height="24" width="24">
-                        <desc>
-                            Task Finger Show Streamline Icon: https://streamlinehq.com
-                        </desc>
-                        <path fill="#ffdda1"
-                            d="M22.2414 19.3719c-0.2145 -0.2145 -0.3846 -0.469 -0.5006 -0.7492 -0.116 -0.2801 -0.1757 -0.5804 -0.1757 -0.8836v-1.913c0 -0.3033 -0.0597 -0.6035 -0.1757 -0.8837 -0.116 -0.2801 -0.2861 -0.5347 -0.5006 -0.7491l-4.1063 -4.1064 -0.0115 5.2609c0.001 0.1259 0.0269 0.2504 0.0761 0.3662 0.0493 0.116 0.1209 0.221 0.2109 0.3091l1.6375 1.6318v1.9972c0.0003 0.6127 0.2435 1.2002 0.6763 1.6338L21.0868 23l1.4348 -3.3479 -0.2802 -0.2802Z"
-                            stroke-width="1"></path>
-                        <path stroke="#191919" stroke-linecap="round" stroke-linejoin="round"
-                            d="m22.5223 19.6521 -0.2802 -0.2802c-0.2146 -0.2143 -0.3848 -0.4688 -0.5009 -0.7491 -0.116 -0.2801 -0.1756 -0.5805 -0.1754 -0.8837v-1.913c0 -0.3033 -0.0597 -0.6035 -0.1757 -0.8837 -0.116 -0.2801 -0.2861 -0.5347 -0.5005 -0.7491l-4.1064 -4.1064"
-                            stroke-width="1"></path>
-                        <path fill="#c77f67"
-                            d="M14.8699 3.86945H4.34811c-1.05655 0 -1.91305 0.8565 -1.91305 1.91304V19.1738c0 1.0566 0.8565 1.9131 1.91305 1.9131H14.8699c1.0565 0 1.913 -0.8565 1.913 -1.9131V5.78249c0 -1.05654 -0.8565 -1.91304 -1.913 -1.91304Z"
-                            stroke-width="1"></path>
-                        <path fill="#e3bfb3"
-                            d="M16.2798 4.49884c-0.1779 -0.19772 -0.3954 -0.35591 -0.6382 -0.46432 -0.2429 -0.10842 -0.5057 -0.16465 -0.7717 -0.16507H4.34811c-0.50737 0 -0.99397 0.20154 -1.35273 0.56032 -0.35877 0.35876 -0.56032 0.84535 -0.56032 1.35272V18.3436L16.2798 4.49884Z"
-                            stroke-width="1"></path>
-                        <path stroke="#191919" stroke-linecap="round" stroke-linejoin="round"
-                            d="M16.7831 18.2173v0.9565c0 0.5073 -0.2015 0.9939 -0.5603 1.3527s-0.8454 0.5604 -1.3527 0.5604h-0.9565"
-                            stroke-width="1"></path>
-                        <path stroke="#191919" stroke-linecap="round" stroke-linejoin="round"
-                            d="M2.43506 15.3477V5.78249c0 -0.50737 0.20155 -0.99396 0.56032 -1.35272 0.35876 -0.35878 0.84536 -0.56032 1.35273 -0.56032h1.91304"
-                            stroke-width="1"></path>
-                        <path stroke="#191919" stroke-linecap="round" stroke-linejoin="round"
-                            d="M12.9565 3.86945h1.9131c0.5073 0 0.9939 0.20154 1.3527 0.56032 0.3588 0.35876 0.5603 0.84535 0.5603 1.35272v6.69571"
-                            stroke-width="1"></path>
-                        <path fill="#e3e3e3"
-                            d="M11.2653 1.95644c-0.1679 -0.2908 -0.4094 -0.53228 -0.7002 -0.70017C10.2742 1.08839 9.94437 1 9.60857 1c-0.33579 0 -0.66567 0.08839 -0.95648 0.25627 -0.2908 0.16789 -0.53231 0.40937 -0.70021 0.70017h-0.73461c-0.25369 0 -0.49699 0.10077 -0.67637 0.28016 -0.17938 0.17938 -0.28016 0.42268 -0.28016 0.67636v1.91305c0 0.25368 0.10078 0.49698 0.28016 0.67636 0.17938 0.17939 0.42268 0.28016 0.67637 0.28016h4.78263c0.2537 0 0.497 -0.10077 0.6763 -0.28016 0.1794 -0.17938 0.2802 -0.42268 0.2802 -0.67636V2.91296c0 -0.25368 -0.1008 -0.49698 -0.2802 -0.67636 -0.1793 -0.17939 -0.4226 -0.28016 -0.6763 -0.28016h-0.7346Z"
-                            stroke-width="1"></path>
-                        <path fill="#b2b2b2"
-                            d="M11.9999 3.86955H7.21727c-0.25369 0 -0.49699 -0.10078 -0.67637 -0.28016 -0.17938 -0.17938 -0.28016 -0.42268 -0.28016 -0.67637v1.91305c0 0.25369 0.10078 0.49698 0.28016 0.67637 0.17938 0.17938 0.42268 0.28016 0.67637 0.28016h4.78263c0.2537 0 0.497 -0.10078 0.6763 -0.28016 0.1794 -0.17939 0.2802 -0.42268 0.2802 -0.67637V2.91302c0 0.25369 -0.1008 0.49699 -0.2802 0.67637 -0.1793 0.17938 -0.4226 0.28016 -0.6763 0.28016Z"
-                            stroke-width="1"></path>
-                        <path stroke="#191919" stroke-linecap="round" stroke-linejoin="round"
-                            d="M11.2653 1.95644c-0.1679 -0.2908 -0.4094 -0.53228 -0.7002 -0.70017C10.2742 1.08839 9.94437 1 9.60857 1c-0.33579 0 -0.66567 0.08839 -0.95648 0.25627 -0.2908 0.16789 -0.53231 0.40937 -0.70021 0.70017h-0.73461c-0.25369 0 -0.49699 0.10077 -0.67637 0.28016 -0.17938 0.17938 -0.28016 0.42268 -0.28016 0.67636v1.91305c0 0.25368 0.10078 0.49698 0.28016 0.67636 0.17938 0.17939 0.42268 0.28016 0.67637 0.28016h4.78263c0.2537 0 0.497 -0.10077 0.6763 -0.28016 0.1794 -0.17938 0.2802 -0.42268 0.2802 -0.67636V2.91296c0 -0.25368 -0.1008 -0.49698 -0.2802 -0.67636 -0.1793 -0.17939 -0.4226 -0.28016 -0.6763 -0.28016h-0.7346Z"
-                            stroke-width="1"></path>
-                        <path fill="#ffdda1"
-                            d="M1.47803 23v-2.552c0.00026 -0.8454 0.33625 -1.656 0.93411 -2.2537 0.59786 -0.5977 1.40861 -0.9334 2.25398 -0.9334h1.59452v-4.3044c0 -0.3805 0.15117 -0.7455 0.42024 -1.0146 0.26907 -0.269 0.63402 -0.4202 1.01455 -0.4202 0.38052 0 0.74548 0.1512 1.01455 0.4202 0.26907 0.2691 0.42023 0.6341 0.42023 1.0146v6.6957l1.23299 -1.0321c0.2029 -0.2438 0.4944 -0.397 0.8103 -0.4259 0.3159 -0.0288 0.6303 0.0689 0.8741 0.2719 0.2438 0.203 0.397 0.4944 0.4259 0.8104 0.0288 0.3158 -0.0689 0.6302 -0.2719 0.874L9.83039 23"
-                            stroke-width="1"></path>
-                        <path stroke="#191919" stroke-linecap="round" stroke-linejoin="round"
-                            d="M1.47803 23v-2.552c0.00026 -0.8454 0.33625 -1.656 0.93411 -2.2537 0.59786 -0.5977 1.40861 -0.9334 2.25398 -0.9334h1.59452v-4.3044c0 -0.3805 0.15117 -0.7455 0.42024 -1.0146 0.26907 -0.269 0.63402 -0.4202 1.01455 -0.4202 0.38052 0 0.74548 0.1512 1.01455 0.4202 0.26907 0.2691 0.42023 0.6341 0.42023 1.0146v6.6957l1.23299 -1.0321c0.2029 -0.2438 0.4944 -0.397 0.8103 -0.4259 0.3159 -0.0288 0.6303 0.0689 0.8741 0.2719 0.2438 0.203 0.397 0.4944 0.4259 0.8104 0.0288 0.3158 -0.0689 0.6302 -0.2719 0.874L9.83039 23"
-                            stroke-width="1"></path>
-                        <path stroke="#191919" stroke-linecap="round" stroke-linejoin="round"
-                            d="m19.8504 16.1054 -1.4348 -1.4348c-0.0883 -0.0914 -0.1938 -0.1643 -0.3105 -0.2144 -0.1167 -0.0501 -0.2422 -0.0765 -0.3692 -0.0776 -0.1271 -0.0011 -0.253 0.0231 -0.3706 0.0712 -0.1175 0.0481 -0.2243 0.1191 -0.3141 0.2089 -0.0898 0.0898 -0.1609 0.1967 -0.2089 0.3142 -0.0481 0.1176 -0.0723 0.2435 -0.0713 0.3705 0.0012 0.127 0.0276 0.2525 0.0777 0.3692 0.0501 0.1167 0.123 0.2223 0.2144 0.3105l1.6327 1.6318v1.9972c0.0002 0.6127 0.2435 1.2002 0.6763 1.6338L21.0871 23"
-                            stroke-width="1"></path>
-                    </svg></div>
-                <h3>Hasil Akurat</h3>
-                <p>Mendapatkan bounding box langsung pada area yang terindikasi terdapat benda asing atau anomali
-                    visual.</p>
+            <div class="feature-card tilt-card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="240">
+                <div class="feature-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 14.14 14.14"/></svg>
+                </div>
+                <h3>Boks Prediksi Akurat</h3>
+                <p>Visualisasi koordinat lokasi anomali secara instan menggunakan bounding box dinamis dengan confidence score riil.</p>
             </div>
         </div>
     </section>
 
-    <!-- Keunggulan Teknis -->
-    <section class="why-section reveal" id="keunggulan">
-        <p class="section-label">Keunggulan Teknis</p>
-        <h2 class="section-title">Apa yang Membuat Prototipe Ini Berbeda</h2>
-        <div class="why-grid">
-            <div class="why-card">
+    <section class="why-section" id="keunggulan">
+        <div class="section-ghost-num">04</div>
+        <p class="section-label" style="text-align:center; position:relative; z-index:2;">Spesifikasi</p>
+        <h2 class="section-title" data-aos="fade-down" style="position:relative; z-index:2;">Keunggulan Teknis</h2>
+        <div class="why-grid" style="position:relative; z-index:2;">
+            <div class="why-card tilt-card" data-aos="zoom-in" data-aos-duration="700" data-aos-delay="0">
                 <div class="why-number">01</div>
-                <h3>Dua Mode Deteksi</h3>
-                <p>Mendukung deteksi gambar statis (upload) maupun streaming real-time lewat kamera via WebSocket.</p>
+                <h3>Dual Mode</h3>
+                <p>Integrasi paralel antara protokol HTTP Multipart dan WebSocket Pipeline untuk fleksibilitas input maksimum.</p>
             </div>
-            <div class="why-card">
+            <div class="why-card tilt-card" data-aos="zoom-in" data-aos-duration="700" data-aos-delay="80">
                 <div class="why-number">02</div>
-                <h3>Ringan & Mudah Dijalankan</h3>
-                <p>Cukup browser dan webcam standar, tanpa perangkat keras khusus untuk demo.</p>
+                <h3>Zero Hardware</h3>
+                <p>Kompilasi model sisi server menjamin kelancaran aplikasi di web standar tanpa kebutuhan hardware khusus.</p>
             </div>
-            <div class="why-card">
+            <div class="why-card tilt-card" data-aos="zoom-in" data-aos-duration="700" data-aos-delay="160">
                 <div class="why-number">03</div>
-                <h3>Confidence Score</h3>
-                <p>Setiap hasil deteksi menampilkan skor kepercayaan model agar evaluasi lebih transparan.</p>
+                <h3>Matriks Skor</h3>
+                <p>Evaluasi presisi berbasis nilai Confidence Score riil yang dikomputasi langsung dari bobot model aktif.</p>
             </div>
-            <div class="why-card">
+            <div class="why-card tilt-card" data-aos="zoom-in" data-aos-duration="700" data-aos-delay="240">
                 <div class="why-number">04</div>
-                <h3>Arsitektur API Terstruktur</h3>
-                <p>Backend FastAPI dirancang dengan endpoint yang modular sehingga mudah dikembangkan, diuji, dan
-                    diintegrasikan dengan model YOLOv8 maupun fitur tambahan di masa depan.</p>
+                <h3>Modul FastAPI</h3>
+                <p>Routing backend terfragmentasi dengan arsitektur async yang mendukung skalabilitas tinggi dan latensi rendah.</p>
             </div>
         </div>
     </section>
 
-    <!-- Metodologi -->
-    <section class="testimonial-section reveal" id="metodologi">
-        <p class="section-label">Metodologi</p>
-        <h2 class="section-title">Alur Kerja Sistem</h2>
+    <section class="testimonial-section" id="metodologi">
+        <p class="section-label" style="text-align:center;">Arsitektur</p>
+        <h2 class="section-title" data-aos="fade-up">Alur Kerja Data</h2>
         <div class="testimonial-grid">
-            <div class="testimonial-card">
-                <p class="testimonial-text">Gambar ompreng diambil melalui upload file atau langsung dari kamera
-                    perangkat pengguna.</p>
+            <div class="testimonial-card tilt-card" data-aos="fade-right" data-aos-duration="900">
+                <p class="testimonial-text">Ekstraksi berkas mentah atau umpan video berkelanjutan yang diambil langsung melalui antarmuka web dengan dukungan drag-drop dan paste.</p>
                 <div class="testimonial-author">
                     <div class="author-avatar">1</div>
                     <div>
-                        <div class="author-name">Input Citra</div>
-                        <div class="author-role">Upload / Kamera</div>
+                        <div class="author-name">Ingestion Stage</div>
+                        <div class="author-role">Media Input</div>
                     </div>
                 </div>
             </div>
-            <div class="testimonial-card">
-                <p class="testimonial-text">Citra dikirim ke backend FastAPI, lalu diproses oleh model YOLOv8 yang telah
-                    dilatih.</p>
+            <div class="testimonial-card tilt-card" data-aos="fade-up" data-aos-duration="900" data-aos-delay="100">
+                <p class="testimonial-text">Pengiriman muatan biner base64 secara sekuensial menuju server FastAPI untuk komputasi YOLOv8 tensor inference penuh.</p>
                 <div class="testimonial-author">
                     <div class="author-avatar">2</div>
                     <div>
-                        <div class="author-name">Inferensi Model</div>
-                        <div class="author-role">YOLOv8 + FastAPI</div>
+                        <div class="author-name">Inference Stage</div>
+                        <div class="author-role">YOLOv8 Processing</div>
                     </div>
                 </div>
             </div>
-            <div class="testimonial-card">
-                <p class="testimonial-text">Hasil deteksi berupa bounding box dan confidence score dikembalikan dan
-                    ditampilkan ke pengguna.</p>
+            <div class="testimonial-card tilt-card" data-aos="fade-left" data-aos-duration="900" data-aos-delay="200">
+                <p class="testimonial-text">Dekode matriks koordinat boks deteksi dan rendering overlay grafis bounding box secara langsung ke browser tanpa reload.</p>
                 <div class="testimonial-author">
                     <div class="author-avatar">3</div>
                     <div>
-                        <div class="author-name">Output & Evaluasi</div>
-                        <div class="author-role">Bounding Box + Skor</div>
+                        <div class="author-name">Presentation Stage</div>
+                        <div class="author-role">UI Render View</div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- CTA Banner -->
-    <section class="cta-banner reveal">
-        <div class="cta-banner-inner">
-            <h2>Tertarik mencoba prototipenya?</h2>
-            <p>Silakan jajal demo aplikasi untuk melihat bagaimana sistem ini mendeteksi benda asing secara langsung.
-            </p>
-            <a href="/static/app.html" class="cta-button cta-button-light">
-                Buka Demo
-                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                        d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
-            </a>
         </div>
     </section>
 
@@ -337,66 +195,186 @@
         <div class="footer-grid">
             <div class="footer-brand">
                 <div class="logo">MBG<span>Vision</span></div>
-                <p>Prototipe sistem deteksi benda asing pada makanan berbasis YOLOv8 — dikembangkan sebagai proyek tugas
-                    akhir.</p>
+                <p>Sistem cerdas purwarupa deteksi kontaminasi makanan berbasis Deep Learning untuk program Makan Bergizi Gratis.</p>
             </div>
             <div class="footer-col">
                 <h4>Navigasi</h4>
                 <a href="#tentang">Tentang</a>
                 <a href="#fitur">Fitur</a>
                 <a href="#keunggulan">Keunggulan</a>
-                <a href="/static/app.html">Buka Aplikasi</a>
+                <a href="#metodologi">Metodologi</a>
             </div>
             <div class="footer-col">
                 <h4>Teknologi</h4>
-                <span class="footer-text">YOLOv8 — Object Detection</span>
-                <span class="footer-text">FastAPI — Backend</span>
+                <span class="footer-text">YOLOv8 Architecture</span>
+                <span class="footer-text">FastAPI Web Server</span>
+                <span class="footer-text">WebSocket Stream</span>
             </div>
             <div class="footer-col">
                 <h4>Proyek</h4>
-                <span class="footer-text">Tugas Akhir Deep Learning</span>
-                <span class="footer-text">Tahun Akademik 2025/2026</span>
+                <span class="footer-text">Tugas Akhir Kelompok 5</span>
+                <span class="footer-text">© 2026 MBG Vision</span>
             </div>
         </div>
         <div class="footer-bottom">
-            <span>© 2026 MBG Vision. Dibuat dengan <b>tergopoh-gopoh</b> by Kelompok 5.</span>
+            <span>Built with precision for food security — MBG Vision 2026</span>
         </div>
     </footer>
 
     <script>
-        // Navbar scroll shadow
+        // =============================================
+        // AOS Init
+        // =============================================
+        AOS.init({ once: false, mirror: true, duration: 900 });
+
+        // =============================================
+        // VANTA NET HERO
+        // =============================================
+        VANTA.NET({
+            el: "#vanta-hero-canvas",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 100,
+            minWidth: 100,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0x6366f1,
+            backgroundColor: 0xf8fafc,
+            points: 14.00,
+            maxDistance: 22.00,
+            spacing: 16.00
+        });
+
+        // =============================================
+        // NAVBAR SCROLL
+        // =============================================
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
-            navbar.classList.toggle('scrolled', window.scrollY > 10);
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
         });
 
-        // Generic scroll-reveal for sections
-        const sectionObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    sectionObserver.unobserve(entry.target);
-                }
-            });
-        }, {
-            threshold: 0.12
+        // =============================================
+        // SCROLL PROGRESS BAR
+        // =============================================
+        const progressBar = document.getElementById('scrollProgress');
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            progressBar.style.width = progress + '%';
         });
-        document.querySelectorAll('.reveal').forEach(el => sectionObserver.observe(el));
 
-        // Staggered card reveal (feature / why / testimonial cards)
-        const cardObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    cardObserver.unobserve(entry.target);
-                }
-            });
-        }, {
-            threshold: 0.15
+        // =============================================
+        // WORD-BY-WORD KINETIC HERO TITLE
+        // =============================================
+        const titleEl = document.getElementById('kineticTitle');
+        const titleWords = [
+            { text: 'Inspeksi', gradient: false },
+            { text: 'Keamanan', gradient: false },
+            { text: 'Ompreng', gradient: false },
+            { text: 'dengan', gradient: false },
+            { text: 'Artificial', gradient: true },
+            { text: 'Intelligence', gradient: true },
+        ];
+
+        titleWords.forEach((wordObj, i) => {
+            const span = document.createElement('span');
+            span.className = 'word-reveal' + (wordObj.gradient ? ' text-gradient' : '');
+            span.textContent = wordObj.text;
+            span.style.animationDelay = (0.1 + i * 0.13) + 's';
+            titleEl.appendChild(span);
+            if (i < titleWords.length - 1) titleEl.appendChild(document.createTextNode(' '));
         });
-        document.querySelectorAll('.feature-card, .why-card, .testimonial-card').forEach(card => cardObserver.observe(
-            card));
+
+        // Trigger word reveal shortly after page load
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                document.querySelectorAll('.word-reveal').forEach(el => el.classList.add('visible'));
+                document.getElementById('cinematicDesc').classList.add('visible');
+                document.getElementById('ctaGroup').classList.add('visible');
+                document.getElementById('heroStats').classList.add('visible');
+                document.getElementById('scrollHint').classList.add('visible');
+            }, 200);
+        });
+
+        // =============================================
+        // CUSTOM CURSOR ORB
+        // =============================================
+        const orb = document.getElementById('cursorOrb');
+        const dot = document.getElementById('cursorDot');
+        let orbX = -400, orbY = -400;
+        let dotX = -400, dotY = -400;
+        let targetX = -400, targetY = -400;
+        let rafId;
+
+        document.addEventListener('mousemove', (e) => {
+            targetX = e.clientX;
+            targetY = e.clientY;
+            // Dot follows instantly
+            dotX = e.clientX;
+            dotY = e.clientY;
+            dot.style.left = dotX + 'px';
+            dot.style.top = dotY + 'px';
+        });
+
+        // Orb lags behind with lerp for that fluid feel
+        function animateOrb() {
+            orbX += (targetX - orbX) * 0.06;
+            orbY += (targetY - orbY) * 0.06;
+            orb.style.left = orbX + 'px';
+            orb.style.top = orbY + 'px';
+            rafId = requestAnimationFrame(animateOrb);
+        }
+        animateOrb();
+
+        // Expand orb on interactive elements
+        document.querySelectorAll('a, button, .tilt-card, .nav-link, .nav-btn').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                orb.style.width = '550px';
+                orb.style.height = '550px';
+                dot.classList.add('is-hovering');
+            });
+            el.addEventListener('mouseleave', () => {
+                orb.style.width = '380px';
+                orb.style.height = '380px';
+                dot.classList.remove('is-hovering');
+            });
+        });
+
+        // =============================================
+        // MAGNETIC TILT ON CARDS
+        // =============================================
+        document.querySelectorAll('.tilt-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const cx = rect.left + rect.width / 2;
+                const cy = rect.top + rect.height / 2;
+                const dx = (e.clientX - cx) / (rect.width / 2);
+                const dy = (e.clientY - cy) / (rect.height / 2);
+                const tiltX = dy * -7;
+                const tiltY = dx * 7;
+                card.style.transform = `perspective(800px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateZ(8px)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+                card.style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+            });
+
+            card.addEventListener('mouseenter', () => {
+                card.style.transition = 'transform 0.1s ease';
+            });
+        });
+
+        // =============================================
+        // HIDE SCROLL HINT AFTER FIRST SCROLL
+        // =============================================
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 80) {
+                document.getElementById('scrollHint').style.opacity = '0';
+            }
+        }, { passive: true });
     </script>
 </body>
-
 </html>
